@@ -50,10 +50,9 @@ $(function() {
     describe('The menu', function() {
         /*
         Finds the Body element, checks if within the classes assigned to body 'menu-hidden' is one of them
-         */
-        const body = document.querySelector('body');
+        */
             it('is hidden by default', function() {
-                expect(body.classList.contains('menu-hidden')).toBe(true);
+                expect($('body').hasClass('menu-hidden')).toBe(true);
         });
 
         /*
@@ -63,9 +62,9 @@ $(function() {
         it('shows or hides the menu when clicked', function(){
             const menu = document.querySelector('.menu-icon-link');
             menu.click();
-            expect(body.classList.contains('menu-hidden')).toBe(false);
+            expect($('body').hasClass('menu-hidden')).toBe(false);
             menu.click();
-            expect(body.classList.contains('menu-hidden')).toBe(true);
+            expect($('body').hasClass('menu-hidden')).toBe(true);
         });
     });
 
@@ -104,11 +103,11 @@ $(function() {
         all the HTML content is saved in the first Feed variable. Then we call the function again
         to load a different feed. The HTML content for it is saved on the secondFeed variable
         */
-        beforeEach(function(done){
+        beforeEach((done) => {
             loadFeed(0, function(){
                 firstFeed = feedContainer.innerHTML;
                 loadFeed(1, function(){
-                    secondArticle = feedContainer.firstElementChild.innerText;
+                    secondFeed = feedContainer.innerHTML;
                     done();
                 });
             });
