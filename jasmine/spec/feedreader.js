@@ -26,9 +26,8 @@ $(function() {
             expect(allFeeds.length).not.toBe(0);
         });
 
-        /* TODO: Write a test that loops through each feed
-         * in the allFeeds object and ensures it has a URL defined
-         * and that the URL is not empty.
+        /*
+        Loops over the feeds, reviews that URL is defined and not empty
          */
         it('each has an URL defined and not empty', function(){
             allFeeds.forEach(function(feed) {
@@ -37,9 +36,8 @@ $(function() {
           })
         });
 
-        /* TODO: Write a test that loops through each feed
-         * in the allFeeds object and ensures it has a name defined
-         * and that the name is not empty.
+        /*
+        Loops over the feeds, reviews that NAME is defined and not empty
          */
         it('each has a name defined and not empty', function(){
             allFeeds.forEach(function(feed) {
@@ -49,22 +47,18 @@ $(function() {
         });
     });
 
-    /* TODO: Write a new test suite named "The menu" */
     describe('The menu', function() {
-        /* TODO: Write a test that ensures the menu element is
-         * hidden by default. You'll have to analyze the HTML and
-         * the CSS to determine how we're performing the
-         * hiding/showing of the menu element.
+        /*
+        Finds the Body element, checks if within the classes assigned to body 'menu-hidden' is one of them
          */
         const body = document.querySelector('body');
             it('is hidden by default', function() {
                 expect(body.classList.contains('menu-hidden')).toBe(true);
         });
 
-        /* TODO: Write a test that ensures the menu changes
-          * visibility when the menu icon is clicked. This test
-          * should have two expectations: does the menu display when
-          * clicked and does it hide when clicked again.
+        /*
+        Finds the menu icon element, clicks it and checks that the menu is visible
+        Click again and verify that is no longer visible
         */
         it('shows or hides the menu when clicked', function(){
             const menu = document.querySelector('.menu-icon-link');
@@ -75,48 +69,54 @@ $(function() {
         });
     });
 
-    /* TODO: Write a new test suite named "Initial Entries" */
     describe('Initial Entries', function() {
+        /*
+        Calls the load feeds function which is asynchronous
+        */
         beforeEach(function(done){
             loadFeed(0, function(){
                 done();
             });
         });
-        /* TODO: Write a test that ensures when the loadFeed
-         * function is called and completes its work, there is at least
-         * a single .entry element within the .feed container.
-         * Remember, loadFeed() is asynchronous so this test will require
-         * the use of Jasmine's beforeEach and asynchronous done() function.
+
+        /*
+        Finds all the retrieved articles and saves them into feedContainer
+        Then we check to make sure that there is at least 1 in it.
          */
         it('looks for at least 1 entry within the feed container', function(done){
-            const feedContainer = document.querySelector('.feed');
-            expect(feedContainer.firstElementChild.classList.contains('entry-link')).toBe(true);
+            const feedContainer = document.querySelectorAll('.feed .entry');
+            expect(feedContainer.length).toBeGreaterThan(0);
             done();
         });
     });
 
-    /* TODO: Write a new test suite named "New Feed Selection" */
+
     describe('New Feed Selection', function() {
+        /*
+        Find the feed container which is where all the articles are loaded into
+        Declares variables to save the feeds to be used for comparison later
+        */
         const feedContainer = document.querySelector('.feed');
-        let firstArticle;
-        let secondArticle;
+        let firstFeed;
+        let secondFeed;
+        /*
+        Calls load Feed function which is asynchronous, after retrieving the first feed
+        all the HTML content is saved in the first Feed variable. Then we call the function again
+        to load a different feed. The HTML content for it is saved on the secondFeed variable
+        */
         beforeEach(function(done){
             loadFeed(0, function(){
-                firstArticle = feedContainer.firstElementChild.innerText;
-                done();
+                firstFeed = feedContainer.innerHTML;
+                loadFeed(1, function(){
+                    secondArticle = feedContainer.firstElementChild.innerText;
+                    done();
+                });
             });
-        loadFeed(1, function(){
-            secondArticle = feedContainer.firstElementChild.innerText;
-            done();
         });
-    });
 
-        /* TODO: Write a test that ensures when a new feed is loaded
-         * by the loadFeed function that the content actually changes.
-         * Remember, loadFeed() is asynchronous.
-         */
+        // First feed and second feed are compared to make sure they are different
         it('changes content when a new feed is loaded', function(done){
-            expect(secondArticle).not.toMatch(firstArticle);
+            expect(secondFeed).not.toMatch(firstFeed);
             done();
         });
     });
